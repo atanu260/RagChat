@@ -1,0 +1,87 @@
+@baseUrl = http://localhost:5136
+@token = REPLACE_WITH_ACCESS_TOKEN
+@documentId = 00000000-0000-0000-0000-000000000001
+@sessionId = 00000000-0000-0000-0000-000000000002
+
+### Register
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "reader@example.com",
+  "password": "ReplaceThisPassword123!",
+  "displayName": "Document Reader"
+}
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "reader@example.com",
+  "password": "ReplaceThisPassword123!"
+}
+
+### Upload a PDF (replace the path with an existing local PDF)
+POST {{baseUrl}}/api/documents
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=ragchat-boundary
+
+--ragchat-boundary
+Content-Disposition: form-data; name="file"; filename="sample.pdf"
+Content-Type: application/pdf
+
+< ./sample.pdf
+--ragchat-boundary--
+
+### List documents
+GET {{baseUrl}}/api/documents
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get a document
+GET {{baseUrl}}/api/documents/{{documentId}}
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get a missing document (404)
+GET {{baseUrl}}/api/documents/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Delete a document
+DELETE {{baseUrl}}/api/documents/{{documentId}}
+Authorization: Bearer {{token}}
+
+### Reindex a document
+POST {{baseUrl}}/api/documents/{{documentId}}/reindex
+Authorization: Bearer {{token}}
+
+### Create a chat session
+POST {{baseUrl}}/api/chat/sessions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Questions about my PDF"
+}
+
+### List chat sessions
+GET {{baseUrl}}/api/chat/sessions
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Get session messages
+GET {{baseUrl}}/api/chat/sessions/{{sessionId}}/messages
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### Ask a question (Server-Sent Events)
+POST {{baseUrl}}/api/chat/sessions/{{sessionId}}/ask
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: text/event-stream
+
+{
+  "question": "What is this document about?"
+}
