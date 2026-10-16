@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.skeleton {
+  display: block;
+  max-width: 100%;
+  background:
+    linear-gradient(
+      100deg,
+      transparent 20%,
+      color-mix(in srgb, var(--color-surface) 78%, white) 48%,
+      transparent 76%
+    ),
+    color-mix(in srgb, var(--color-text-muted) 12%, var(--color-background));
+  background-size: 220% 100%, 100% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton--line {
+  border-radius: 999px;
+}
+
+.skeleton--circle {
+  border-radius: 50%;
+}
+
+.skeleton--block {
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    background-position: -220% 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

@@ -1,0 +1,199 @@
+.composer {
+  width: min(100%, 820px);
+  margin-inline: auto;
+  padding: 0.75rem 0.875rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.composer:focus-within {
+  border-color: color-mix(in srgb, var(--color-primary) 55%, var(--color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent), var(--shadow-raised);
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  max-height: 176px;
+  min-height: 34px;
+  resize: none;
+  overflow-y: auto;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-text);
+  line-height: 1.55;
+}
+
+textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+textarea:disabled {
+  opacity: 0.75;
+}
+
+.composer__footer,
+.composer__options {
+  display: flex;
+  align-items: center;
+}
+
+.composer__footer {
+  min-height: 38px;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.composer__options {
+  min-width: 0;
+  gap: 0.45rem;
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.scope-select {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.scope-select::-webkit-details-marker {
+  display: none;
+}
+
+.scope-select--disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.scope-picker {
+  position: relative;
+}
+
+.scope-picker summary {
+  list-style: none;
+}
+
+.scope-menu {
+  position: absolute;
+  z-index: 8;
+  bottom: calc(100% + 0.6rem);
+  left: 0;
+  display: flex;
+  width: min(290px, calc(100vw - 4rem));
+  max-height: 240px;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow-y: auto;
+  padding: 0.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-raised);
+}
+
+.scope-picker[open] .scope-select {
+  color: var(--color-primary);
+}
+
+.scope-option {
+  display: flex;
+  min-height: 44px;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.scope-option:hover {
+  background: var(--color-background);
+}
+
+.scope-option input {
+  accent-color: var(--color-primary);
+}
+
+.scope-option span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scope-hint {
+  overflow: hidden;
+  max-width: 190px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.send-button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.send-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: var(--color-primary-hover);
+}
+
+.send-button:disabled {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.send-button--stop {
+  background: var(--color-error);
+  color: var(--color-on-error);
+}
+
+.composer__hint,
+.scope-error {
+  display: block;
+  margin: 0.15rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+.scope-error {
+  color: var(--color-warning);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 540px) {
+  .composer {
+    padding-inline: 0.7rem;
+    border-radius: 16px;
+  }
+}

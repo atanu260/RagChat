@@ -1,0 +1,120 @@
+<div class="app-shell" [class.app-shell--collapsed]="collapsed()">
+  @if (drawerOpen()) {
+    <button
+      class="drawer-backdrop"
+      type="button"
+      aria-label="Close navigation menu"
+      (click)="closeDrawer()"
+    ></button>
+  }
+
+  <aside
+    class="sidebar"
+    [class.sidebar--open]="drawerOpen()"
+    [cdkTrapFocus]="drawerOpen()"
+    [cdkTrapFocusAutoCapture]="drawerOpen()"
+    [attr.aria-label]="'Main navigation'"
+    (keydown.escape)="closeDrawer()"
+  >
+    <div class="sidebar__top">
+      <a class="brand" routerLink="/chat" aria-label="RagChat home" (click)="closeDrawer()">
+        <span class="brand__mark" aria-hidden="true">R</span>
+        <span class="brand__name">RagChat</span>
+      </a>
+      <button
+        class="icon-button sidebar__collapse"
+        type="button"
+        [attr.aria-label]="collapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+        [attr.title]="collapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+        (click)="toggleSidebar()"
+      >
+        @if (collapsed()) {
+          <svg lucidePanelLeftOpen [size]="18"></svg>
+        } @else {
+          <svg lucidePanelLeftClose [size]="18"></svg>
+        }
+      </button>
+      <button
+        class="icon-button sidebar__close"
+        type="button"
+        aria-label="Close navigation menu"
+        (click)="closeDrawer()"
+      >
+        <svg lucideX [size]="19"></svg>
+      </button>
+    </div>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <span class="nav-section-label">Workspace</span>
+      <a
+        class="nav-link"
+        routerLink="/chat"
+        routerLinkActive="nav-link--active"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ariaCurrentWhenActive="page"
+        [title]="collapsed() ? 'Chat' : ''"
+        (click)="closeDrawer()"
+      >
+        <svg lucideMessageSquareText [size]="19"></svg>
+        <span class="nav-link__label">Chat</span>
+      </a>
+      <a
+        class="nav-link"
+        routerLink="/documents"
+        routerLinkActive="nav-link--active"
+        ariaCurrentWhenActive="page"
+        [title]="collapsed() ? 'Documents' : ''"
+        (click)="closeDrawer()"
+      >
+        <svg lucideFiles [size]="19"></svg>
+        <span class="nav-link__label">Documents</span>
+      </a>
+    </nav>
+
+    <div class="sidebar__footer">
+      <button class="profile-trigger" type="button" [cdkMenuTriggerFor]="userMenu">
+        <app-avatar [initials]="userInitials()" size="md" />
+        <span class="profile-trigger__details">
+          <span class="profile-trigger__name">{{ user()?.displayName }}</span>
+          <span class="profile-trigger__email">{{ user()?.email }}</span>
+        </span>
+        <span class="profile-trigger__chevron" aria-hidden="true">···</span>
+      </button>
+      <ng-template #userMenu>
+        <div class="user-menu" cdkMenu>
+          <div class="user-menu__identity">
+            <span class="user-menu__name">{{ user()?.displayName }}</span>
+            <span class="user-menu__email">{{ user()?.email }}</span>
+          </div>
+          <div class="user-menu__divider" role="separator"></div>
+          <button class="user-menu__item" type="button" cdkMenuItem (click)="toggleTheme()">
+            @if (theme.isDark()) {
+              <svg lucideSun [size]="17"></svg>
+              <span>Switch to light mode</span>
+            } @else {
+              <svg lucideMoon [size]="17"></svg>
+              <span>Switch to dark mode</span>
+            }
+          </button>
+          <button class="user-menu__item user-menu__item--danger" type="button" cdkMenuItem (click)="logout()">
+            <svg lucideLogOut [size]="17"></svg>
+            <span>Log out</span>
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </aside>
+
+  <div class="shell-main">
+    <header class="mobile-header">
+      <button class="icon-button mobile-header__menu" type="button" aria-label="Open navigation menu" (click)="openDrawer()">
+        <svg lucideMenu [size]="21"></svg>
+      </button>
+      <span class="mobile-header__title">{{ pageTitle() }}</span>
+      <span class="mobile-header__brand" aria-hidden="true">R</span>
+    </header>
+    <main class="shell-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

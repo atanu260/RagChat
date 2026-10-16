@@ -10,11 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" version="10.0.12">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+	<PackageReference Include="Scalar.AspNetCore" Version="2.17.14" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.0" />
   </ItemGroup>
 
   <ItemGroup>

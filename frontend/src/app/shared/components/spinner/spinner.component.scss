@@ -1,0 +1,40 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.spinner {
+  display: inline-block;
+  flex: 0 0 auto;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-rotate 700ms linear infinite;
+}
+
+.spinner--sm {
+  width: 14px;
+  height: 14px;
+}
+
+.spinner--md {
+  width: 20px;
+  height: 20px;
+}
+
+.spinner--lg {
+  width: 28px;
+  height: 28px;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 1400ms;
+  }
+}

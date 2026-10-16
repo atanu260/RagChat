@@ -1,0 +1,190 @@
+<main class="auth-layout">
+  <aside class="brand-panel" aria-label="About RagChat">
+    <div class="brand-panel__content">
+      <a class="brand" routerLink="/login" aria-label="RagChat home">
+        <span class="brand__mark"><svg lucideMessageCircle [size]="20"></svg></span>
+        <span class="brand__name">RagChat</span>
+      </a>
+
+      <div class="brand-panel__message">
+        <p class="brand-panel__eyebrow">A smarter way to find answers</p>
+        <h2>Ask your documents anything.</h2>
+        <p class="brand-panel__description">
+          Turn your files into a thoughtful conversation. Clear answers, grounded in what you share.
+        </p>
+
+        <ul class="feature-list">
+          <li>
+            <span class="feature-list__icon"><svg lucideFileUp [size]="18"></svg></span>
+            <span><strong>Upload files</strong><small>Bring your knowledge together</small></span>
+          </li>
+          <li>
+            <span class="feature-list__icon"><svg lucideQuote [size]="18"></svg></span>
+            <span><strong>Get cited answers</strong><small>See where each answer comes from</small></span>
+          </li>
+          <li>
+            <span class="feature-list__icon"><svg lucideLockKeyhole [size]="18"></svg></span>
+            <span><strong>Your data stays private</strong><small>Your workspace is yours alone</small></span>
+          </li>
+        </ul>
+      </div>
+
+      <p class="brand-panel__footer">A more human way to work with your knowledge.</p>
+    </div>
+    <span class="brand-panel__orb brand-panel__orb--one" aria-hidden="true"></span>
+    <span class="brand-panel__orb brand-panel__orb--two" aria-hidden="true"></span>
+  </aside>
+
+  <section class="form-panel" [attr.aria-labelledby]="'auth-title'">
+    <div class="auth-card">
+      <a class="mobile-brand" routerLink="/login" aria-label="RagChat home">
+        <span class="brand__mark"><svg lucideMessageCircle [size]="19"></svg></span>
+        <span class="brand__name">RagChat</span>
+      </a>
+
+      <div class="auth-heading">
+        <p class="auth-heading__eyebrow">{{ isRegister() ? 'Get started' : 'Welcome back' }}</p>
+        <h1 id="auth-title">{{ isRegister() ? 'Create your account' : 'Sign in to RagChat' }}</h1>
+        <p>{{ isRegister() ? 'Create an account to get started with your documents.' : 'Enter your details to access your workspace.' }}</p>
+      </div>
+
+      @if (serverError()) {
+        <div class="server-alert" role="alert" aria-live="assertive">
+          <span class="server-alert__icon" aria-hidden="true">!</span>
+          <span>{{ serverError() }}</span>
+        </div>
+      }
+
+      <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        @if (isRegister()) {
+          <label class="auth-field" for="display-name">
+            <span>Display name</span>
+            <input
+              id="display-name"
+              type="text"
+              formControlName="displayName"
+              autocomplete="name"
+              maxlength="100"
+              required
+              [attr.aria-invalid]="form.controls.displayName.touched && form.controls.displayName.invalid"
+              [attr.aria-describedby]="form.controls.displayName.touched && form.controls.displayName.invalid ? 'display-name-error' : null"
+            />
+            @if (form.controls.displayName.touched && form.controls.displayName.hasError('required')) {
+              <span class="auth-field__error" id="display-name-error">Enter your name.</span>
+            }
+          </label>
+        }
+
+        <label class="auth-field" for="email">
+          <span>Email address</span>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            maxlength="320"
+            required
+            [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+            [attr.aria-describedby]="form.controls.email.touched && form.controls.email.invalid ? 'email-error' : null"
+          />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <span class="auth-field__error" id="email-error">
+              @if (form.controls.email.hasError('required')) {
+                Enter your email address.
+              } @else {
+                Enter a valid email address.
+              }
+            </span>
+          }
+        </label>
+
+        <label class="auth-field" for="password">
+          <span>Password</span>
+          <span class="password-control">
+            <input
+              id="password"
+              [type]="passwordVisible() ? 'text' : 'password'"
+              formControlName="password"
+              [attr.autocomplete]="isRegister() ? 'new-password' : 'current-password'"
+              maxlength="72"
+              required
+              [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+              [attr.aria-describedby]="form.controls.password.touched && form.controls.password.invalid ? 'password-error' : (isRegister() ? 'password-hint' : null)"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="passwordVisible()"
+              (click)="passwordVisible.update((visible) => !visible)"
+            >
+              {{ passwordVisible() ? 'Hide' : 'Show' }}
+            </button>
+          </span>
+          @if (isRegister()) {
+            <span class="auth-field__hint" id="password-hint">At least 8 characters, including an uppercase letter and a number.</span>
+          }
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <span class="auth-field__error" id="password-error">
+              @if (form.controls.password.hasError('required')) {
+                Enter your password.
+              } @else if (form.controls.password.hasError('minlength')) {
+                Use at least 8 characters.
+              } @else if (form.controls.password.hasError('maxlength')) {
+                Passwords must be 72 characters or fewer.
+              } @else {
+                Include at least one uppercase letter and one number.
+              }
+            </span>
+          }
+        </label>
+
+        @if (isRegister()) {
+          <label class="auth-field" for="confirm-password">
+            <span>Confirm password</span>
+            <span class="password-control">
+              <input
+                id="confirm-password"
+                [type]="confirmPasswordVisible() ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                autocomplete="new-password"
+                maxlength="72"
+                required
+                [attr.aria-invalid]="form.controls.confirmPassword.touched && (form.controls.confirmPassword.invalid || form.hasError('passwordMismatch'))"
+                [attr.aria-describedby]="form.controls.confirmPassword.touched && (form.controls.confirmPassword.invalid || form.hasError('passwordMismatch')) ? 'confirm-password-error' : null"
+              />
+              <button
+                class="password-toggle"
+                type="button"
+                [attr.aria-label]="confirmPasswordVisible() ? 'Hide confirmation password' : 'Show confirmation password'"
+                [attr.aria-pressed]="confirmPasswordVisible()"
+                (click)="confirmPasswordVisible.update((visible) => !visible)"
+              >
+                {{ confirmPasswordVisible() ? 'Hide' : 'Show' }}
+              </button>
+            </span>
+            @if (form.controls.confirmPassword.touched && form.controls.confirmPassword.hasError('required')) {
+              <span class="auth-field__error" id="confirm-password-error">Confirm your password.</span>
+            } @else if (form.controls.confirmPassword.touched && form.hasError('passwordMismatch')) {
+              <span class="auth-field__error" id="confirm-password-error">Passwords do not match.</span>
+            }
+          </label>
+        }
+
+        <app-button type="submit" size="lg" [loading]="pending()" [disabled]="form.invalid || pending()">
+          {{ isRegister() ? 'Create account' : 'Sign in' }}
+        </app-button>
+      </form>
+
+      <p class="auth-switch">
+        {{ isRegister() ? 'Already have an account?' : 'New to RagChat?' }}
+        @if (isRegister()) {
+          <a routerLink="/login">Sign in</a>
+        } @else {
+          <a routerLink="/register">Create an account</a>
+        }
+      </p>
+    </div>
+    <p class="form-panel__footer">Secure access to your personal knowledge workspace.</p>
+  </section>
+</main>

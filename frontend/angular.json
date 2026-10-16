@@ -52,11 +52,21 @@
               }
             ],
             "styles": [
+              "src/tailwind.css",
               "src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/clipboard/dist/clipboard.min.js"
             ]
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -78,6 +88,13 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "runner": "vitest",
+            "tsConfig": "tsconfig.spec.json"
+          }
         },
         "serve": {
           "builder": "@angular/build:dev-server",
